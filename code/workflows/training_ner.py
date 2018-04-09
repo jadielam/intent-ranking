@@ -1,0 +1,3 @@
+'''
+Trains a ner model
+'''
