@@ -53,8 +53,8 @@ def main():
 
     #1. Read entity files
     entities_d = {}
-    for type, filepath = entity_files:
-        entities_d[type] = read_entities(filepath)
+    for e_type, filepath in entity_files.items():
+        entities_d[e_type] = read_entities(filepath)
 
     #2. Read templates file
     templates_l = read_templates(filepath)
@@ -69,7 +69,7 @@ def main():
         replacements = {}
         for param in params:
             entities = entities_d[param]
-            line_choice = ramdom.choice(entities)
+            line_choice = random.choice(entities)
             entity_choice = random.choice(line_choice)
             annotated_entity = create_annotated_entity(entity_choice, param)
             replacements[param] = annotated_entity
@@ -77,7 +77,7 @@ def main():
         formatted = template.format(replacements)
         formatted_sentences.append(formatted)
 
-    write_annotated_sentences(output_path, formatted_)
+    write_annotated_sentences(output_path, formatted_sentences)
     
 if __name__ == "__main__":
     main()
