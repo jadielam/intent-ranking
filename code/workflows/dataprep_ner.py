@@ -29,7 +29,7 @@ def read_templates(filepath):
     return entries
 
 def write_annotated_sentences(output_path, annotated_sentences):
-    with open(output_path) as f:
+    with open(output_path, "w+") as f:
         f.write("\n".join(annotated_sentences))
 
 def create_annotated_entity(entity, annotation):

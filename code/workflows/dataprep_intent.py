@@ -36,7 +36,9 @@ def read_entities(filepath):
     return entries
 
 def write_output_file(output_path, entries):
-    pass
+    entries_l = ["\t".join([a, b, c]) for a, b, c in entries]
+    with open(output_path, "w+") as f:
+        f.write("\n".join(entries_l))
 
 def main():
     with open(sys.argv[1]) as f:
