@@ -1,6 +1,6 @@
 '''
 Input: csv file with two columns: template, intents
-Output: csv file with one column: realized templates
+Output: csv file with one column: realized templates, ner annotations
 '''
 import os
 import sys
