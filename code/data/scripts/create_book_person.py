@@ -3,7 +3,7 @@ import csv
 def read_persons():
     persons = set()
 
-    with open("../entities/persons.csv") as f:
+    with open("../ner_entities/persons.csv") as f:
         reader = csv.reader(f, delimiter = ",")
 
         for row in reader:
@@ -13,7 +13,7 @@ def read_persons():
 
 def read_books():
     books = set()
-    with open("../entities/books.csv") as f:
+    with open("../ner_entities/books.csv") as f:
         reader = csv.reader(f, delimiter = ",")
 
         for row in reader:
@@ -32,7 +32,7 @@ def main():
     persons_books = set.intersection(persons, books)
 
     #4. Output the intersection
-    with open("../entities/books_persons.csv", "w+") as f:
+    with open("../ner_entities/books_persons.csv", "w+") as f:
         f.write("\n".join(persons_books))
 
 if __name__ == "__main__":

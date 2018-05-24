@@ -18,7 +18,7 @@ def read_persons():
 def main():
     persons = read_persons()
     persons = _lowercase(persons)
-    with open("../entities/persons.csv", "w+") as f:
+    with open("../ner_entities/persons.csv", "w+") as f:
         f.write("\n".join(persons))
     
 if __name__ == "__main__":

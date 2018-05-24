@@ -1,6 +1,28 @@
 '''
 Input: csv file with two columns: template, intents
-Output: csv file with one column: realized templates, ner annotations
+Output: Two csv files.
+- Csv file with two columns: realized templates, ner annotations
+- Csv file with two columns: realized templates, incorrect ner annotations.
+  The second csv file needs to be corrected manually by a human
+
+Entities that go into first csv file:
+- book (books that are not persons)
+- book_abbv
+- ref_number
+- book_person
+- person (persons that are not books)
+- city
+- demonyms
+- lake
+- sea
+- island
+- mountain
+- topic
+
+Entities that go into the second csv file:
+- bible_verse_portion
+- section_heading
+- small_phrase
 '''
 import os
 import sys
@@ -9,10 +31,32 @@ import csv
 import random
 import string
 
+def generate_random_entity_factory(entities_d):
+
+    def generate_random_entity(entity_type):
+        if entity_type == "book":
+            entities = random.choice(entities_d[entity_type])
+            return entities[0]
+        if entity_type in entities_d:
+            entities = random.choice(entities_d[entity_type])
+            return random.choice(entities)
+        elif entity_type == "ref_number":
+            return random.randint(1, 200)
+        elif entity_type == "book_abbv":
+            entities = random.choice(entities_d["book"])
+            return random.choice(entities)
+        elif entity_type == "small_phrase":
+            pass
+        elif entity_type == "bible_verse_portion":
+            pass
+        elif entity_type == "section_heading":
+            pass
+    return generate_random_entity
+
 def read_entities(filepath):
     entries = []
     with open(filepath) as csvfile:
-        reader = csv.reader(csvfile, delimiter = '\t')
+        reader = csv.reader(csvfile, delimiter = ',')
         for row in reader:
             if len(row) > 0:
                 entries.append(row)

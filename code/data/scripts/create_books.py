@@ -86,7 +86,7 @@ def main():
                 final_books[official_name].add(name)
 
     # Write final books
-    with open("../entities/books.csv", "w+") as f:
+    with open("../ner_entities/books.csv", "w+") as f:
         for bname, bnames in final_books.items():
             f.write(bname)
             for name in bnames:
