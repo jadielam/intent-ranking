@@ -31,7 +31,13 @@ import csv
 import random
 import string
 
-def generate_random_entity_factory(entities_d):
+def are_in_params(list1, params):
+    for a in list1:
+        if a in params:
+            return True
+    return False
+    
+def generate_random_entity_factory(entities_d, function_type):
 
     def generate_random_entity(entity_type):
         if entity_type == "book":
@@ -46,11 +52,14 @@ def generate_random_entity_factory(entities_d):
             entities = random.choice(entities_d["book"])
             return random.choice(entities)
         elif entity_type == "small_phrase":
-            pass
+            return random.choice(entities_d['small_phrase'])
         elif entity_type == "bible_verse_portion":
-            pass
+            return random.choice(entities_d['bible_verse_portion'])
         elif entity_type == "section_heading":
-            pass
+            return random.choice(entities_d['section_heading'])
+        else:
+            raise KeyError
+    
     return generate_random_entity
 
 def read_entities(filepath):
@@ -99,29 +108,39 @@ def main():
     entities_d = {}
     for e_type, filepath in entity_files.items():
         entities_d[e_type] = read_entities(filepath)
-
+    select_random_entity = generate_random_entity_factory(entities_d)
+    
     #2. Read templates file
     templates_l = read_templates(filepath)
 
     #3. For n runs:
     F = string.Formatter()
-    formatted_sentences = []
+    formatted_sentences1 = []
+    formatted_sentences2 = []
+
     for _ in range(nb_samples):
         template = random.choice(templates_l)
         params = [a[1] for a in F.parse(template) if a[1] is not None]
         
-        replacements = {}
-        for param in params:
-            entities = entities_d[param]
-            line_choice = random.choice(entities)
-            entity_choice = random.choice(line_choice)
-            annotated_entity = create_annotated_entity(entity_choice, param)
-            replacements[param] = annotated_entity
         
-        formatted = template.format(replacements)
-        formatted_sentences.append(formatted)
-
-    write_annotated_sentences(output_path, formatted_sentences)
+        if are_in_params(['small_phrase', 'bible_verse_portion', 'section_heading'], params):
+            replacements = {}
+            for param in params:
+                entity_choice = select_random_entity(param)
+                replacements[param] = entity_choice
+            formatted = template.format(replacements)
+            formatted_sentences1.append(formatted)
+        else:
+            replacements = {}
+            for param in params:
+                entity_choice = select_random_entity(param)
+                annotated_entity = create_annotated_entity(entity_choice, param)
+                replacements[param] = annotated_entity
+            formatted = template.format(replacements)
+            formatted_sentences2.append(formatted)
+            
+    write_annotated_sentences(output_path1, formatted_sentences1)
+    write_annotated_sentences(output_path2, formatted_sentences2)
     
 if __name__ == "__main__":
     main()
