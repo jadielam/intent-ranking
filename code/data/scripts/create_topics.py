@@ -22,7 +22,7 @@ def read_entities_to_set(filename):
         reader = csv.reader(f, delimiter = ',')
         for row in reader:
             for entry in row:
-                to_return.add(entry)
+                to_return.add(entry.strip())
     
     return to_return
 
@@ -31,7 +31,7 @@ def main():
     topics = read_topics()
 
     #2. read these entities: books, cities, demonyms, islands, lakes, measurements, mountains, nations, persons, rivers, seas
-    entities = [read_entities_to_set("../ner_entities/" + a + ".csv") for a in ["books", "cities", "demonyms", "islands", "lakes", "measurements", "mountains", "nations", "persons", "rivers", "seas"]]
+    entities = [read_entities_to_set("../ner_entities/" + a + ".csv") for a in ["books", "cities", "demonyms", "islands", "lakes", "measurements", "mountains", "nations", "other_places", "persons", "rivers", "seas"]]
     
     new_topics = set()
     #3. For each entry in topics, if entry is not in any of the
